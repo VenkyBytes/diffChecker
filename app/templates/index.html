@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Diff App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .input-box {
+            width: 40vw;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: white;
+            margin-bottom: 10px;
+            vertical-align: middle;
+        }
+        .button-container {
+            text-align: center;
+        }
+        .output-section {
+            width: 80vw;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .output-text {
+            width: 48%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: white;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            vertical-align: middle;
+        }
+        .output-text[readonly] {
+            background-color: #f4f4f4;
+            cursor: default;
+        }
+        .highlight-added {
+            background-color: lightgreen;
+        }
+        .highlight-removed {
+            background-color: lightcoral;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="POST" action="/diff">
+            <textarea class="input-box" name="left_text" rows="10" placeholder="Enter text for left file">{{ left_text }}</textarea>
+            <textarea class="input-box" name="right_text" rows="10" placeholder="Enter text for right file">{{ right_text }}</textarea>
+            <div class="button-container">
+                <button type="submit">Diff</button>
+            </div>
+        </form>
+        {% if highlighted_left and highlighted_right %}
+        <div class="output-section">
+<pre class="output-text">
+{% for line in highlighted_left -%}
+{% if line.strip() != "" -%}
+{{ line | safe }}
+{% endif -%}{% endfor %}
+</pre>
+<pre class="output-text">
+{% for line in highlighted_right -%}
+{% if line.strip() != "" -%}
+{{ line | safe }}
+{% endif -%}
+{% endfor %}
+</pre></div>
+{% endif %}
+</div>
+</body>
+</html>
